@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<tincan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://projecttincan.com/tincan.xsd">
+  <activities>
+    <activity id="http://faker" type="http://adlnet.gov/expapi/activities/course">
+      <name lang="en-US">Faker</name>
+      <description lang="en-US">This course provides no educational value at all!</description>
+      <launch lang="en-US">index.html</launch>
+    </activity>
+      <activity id="http://faker/W2Mwb05fw6XEbNh-MAdkA-ktWO64KqtB" type="http://adlnet.gov/expapi/activities/module">
+      <name lang="en-US">Welcome (2 min)/section</name>
+      <description lang="en-US"></description>
+    </activity>
+          <activity id="http://faker/hzlboncsNa6jl51uG97Ud7_0ky9TYwhK" type="http://adlnet.gov/expapi/activities/module">
+      <name lang="en-US">Learning Objectives/blocks</name>
+      <description lang="en-US"></description>
+    </activity>
+          <activity id="http://faker/zC8riYeNXsG1Jccf-L9FpRCXh-TnlyxU" type="http://adlnet.gov/expapi/activities/module">
+      <name lang="en-US">Final Quiz/quiz</name>
+      <description lang="en-US">This is the one and only quiz.</description>
+    </activity>
+                                  
+<activity id="http://faker/zC8riYeNXsG1Jccf-L9FpRCXh-TnlyxU/cla9yava900033b6pudpqxxgh" type="http://adlnet.gov/expapi/activities/cmi.interaction">
+  <name lang="en-US">Are you cool?</name>
+  <description lang="en-US"></description>
+  <interactionType>choice</interactionType>
+  <correctResponsePatterns>
+    <correctResponsePattern>choice_cla9yava900043b6p2o6ir5cx</correctResponsePattern>
+    </correctResponsePatterns>
+    <choices>
+    <component>
+    <id>choice_cla9yava900043b6p2o6ir5cx</id>
+    <description lang="en-US">Yes</description>
+  </component>
+    <component>
+    <id>choice_cla9yava900053b6p5z1zfv4u</id>
+    <description lang="en-US">No</description>
+  </component>
+    </choices>
+  </activity>
+                              
+<activity id="http://faker/zC8riYeNXsG1Jccf-L9FpRCXh-TnlyxU/cla9yava900063b6p4xzrjl3v" type="http://adlnet.gov/expapi/activities/cmi.interaction">
+  <name lang="en-US">Who&amp;#39;s fake?</name>
+  <description lang="en-US"></description>
+  <interactionType>choice</interactionType>
+  <correctResponsePatterns>
+    <correctResponsePattern>choice_cla9yava900073b6pdii91bp6</correctResponsePattern>
+    <correctResponsePattern>choice_cla9yava900083b6p5wpbys63</correctResponsePattern>
+    </correctResponsePatterns>
+    <choices>
+    <component>
+    <id>choice_cla9yava900073b6pdii91bp6</id>
+    <description lang="en-US">Fake Guy 1</description>
+  </component>
+    <component>
+    <id>choice_cla9yava900093b6pb3nuyj6w</id>
+    <description lang="en-US">Real Guy 1</description>
+  </component>
+    <component>
+    <id>choice_cla9yava9000a3b6p8okmyqi6</id>
+    <description lang="en-US">Real Guy 2</description>
+  </component>
+    <component>
+    <id>choice_cla9yava900083b6p5wpbys63</id>
+    <description lang="en-US">Fake Guy 2</description>
+  </component>
+    </choices>
+  </activity>
+                      <activity id="http://faker/WJdzYJXDmhGHnVgFcRpH41DRWPBM7v-n" type="http://adlnet.gov/expapi/activities/module">
+      <name lang="en-US">Conclusion/blocks</name>
+      <description lang="en-US"></description>
+    </activity>
+        </activities>
+</tincan>
