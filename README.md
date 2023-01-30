@@ -14,9 +14,9 @@
     <img src="images/logo.png" alt="Logo" width="100" height="100">
   </a>
 
-  <h3 align="center"> Scenario Choices Handler</h3>
+  <h3 align="center"> Scenario Choice Handler</h3>
 
-  <p align="center">A quick additional js file to capture scenario responses in Rise 360 courses   <br />
+  <p align="center">A quick additional js file to capture scenario responses in <a href="https://articulate.com/360/rise">Rise 360</a> courses   <br />
     <br />
     ·
     <a href="https://github.com/richardsonchrisj/ScenarioChoiceHandler/issues">Report Bug</a>
@@ -43,26 +43,27 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://chrisrichardson.dev)
-
-I wanted to save xAPI statements when someone selects options in the scenarios I create using Rise 360. Articulate doesn't provide that functionality.
-
 [![Product Name Screen Shot][product-screenshot2]](https://chrisrichardson.dev)
 
-So I built some additional code that can be added. It grabs the questions and selected answers from the scenario and sends it to your Learning Records Store.
+I wanted to save xAPI statements when someone selects options in the scenarios I create using [Rise 360](https://articulate.com/360/rise). Articulate doesn't provide that functionality. So I built some additional code that can be added. It grabs the questions and selected answers from the scenario and sends it to your Learning Records Store. 
 
 [![Product Name Screen Shot][product-screenshot3]](https://chrisrichardson.dev)
 
 To use this yourself, just copy the [scenario.js](https://github.com/richardsonchrisj/ScenarioChoiceHandler/blob/master/faker/lib/scenario.js) file in the [lib](https://github.com/richardsonchrisj/ScenarioChoiceHandler/tree/master/faker/lib) folder and put it in your own exported Rise course folder.
 
-You'll also need to add this line to your `index.html` file: ` <script type="text/javascript" src="lib/scenario.js"></script>` and update the pages that you'll want to apply it to: `const urlFragments = ["example1.com", "example2.com", "example3.com"]`
+It's important that you update the pages that you'll want to apply it to so the handler is only called on those pages: `const urlFragments = ["example1.com", "example2.com", "example3.com"]`
 
-[![Product Name Screen Shot][product-screenshot6]](https://chrisrichardson.dev)
 [![Product Name Screen Shot][product-screenshot7]](https://chrisrichardson.dev)
 
-I've included a sample course called [Faker](https://github.com/richardsonchrisj/ScenarioChoiceHandler/tree/master/faker) that demonstrates how it all works. If you're using an LRS like SCORM Cloud, you can download the [Faker](https://github.com/richardsonchrisj/ScenarioChoiceHandler/tree/master/faker) course, zip it, and upload it to your LRS.
+You'll also need to add this line to your `index.html` file: ` <script type="text/javascript" src="lib/scenario.js"></script>`. 
 
-[![Product Name Screen Shot][product-screenshot5]](https://chrisrichardson.dev)
+
+[![Product Name Screen Shot][product-screenshot6]](https://chrisrichardson.dev)
+
+
+I've included a sample course called [Faker](https://github.com/richardsonchrisj/ScenarioChoiceHandler/tree/master/faker) that demonstrates how it all works. If you're using an LRS like [SCORM Cloud](https://scorm.com/), you can download the [Faker](https://github.com/richardsonchrisj/ScenarioChoiceHandler/tree/master/faker) course, zip it, and upload it to your LRS.
+
+[![Product Name Screen Shot][product-screenshot]](https://chrisrichardson.dev)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -84,8 +85,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-<p align="right">Author Link: [https://chrisrichardson.dev](https://chrisrichardson.dev)</p>
-<p align="right">Project Link: [https://github.com/richardsonchrisj/ScenarioChoiceHandler](https://github.com/richardsonchrisj/ScenarioChoiceHandler)</p>
+Author Link: [chrisrichardson.dev](https://chrisrichardson.dev)
+</br>
+Project Link: [https://github.com/richardsonchrisj/ScenarioChoiceHandler](https://github.com/richardsonchrisj/ScenarioChoiceHandler)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -120,4 +122,4 @@ Here are a few great resources if you're learning about xAPI and related tools
 [product-screenshot4]: images/screenshot4.png
 [product-screenshot5]: images/screenshot5.png
 [product-screenshot6]: images/screenshot6.png
-[product-screenshot6]: images/screenshot7.png
+[product-screenshot7]: images/screenshot7.png
