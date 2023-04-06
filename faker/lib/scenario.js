@@ -59,11 +59,18 @@ const getScenario = (name, description) => {
 //monitors the page to see if a question was answered
 const questionAnswered = (e) => {
   if (!e.target.closest(".scenario-block__response__inner")) return;
-  const q = document.querySelector(".scenario-block__dialogue__bubble");
-  const a = e.target.closest(".scenario-block__response__inner");
-  const name = q.innerText;
-  const description = a.querySelector("p").innerText;
-  getScenario(name, description);
+
+  const buttons = document.querySelectorAll(".scenario-block__response");
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const a = button.querySelector(".fr-view").innerText;
+      const q = document.querySelector(
+        ".scenario-block__dialogue__bubble"
+      ).innerText;
+      getScenario(q, a);
+    });
+  });
 };
 const handleKeyUp = (e) => {
   if (e.key === "Enter") questionAnswered(e);
@@ -71,10 +78,12 @@ const handleKeyUp = (e) => {
 
 //sets up the handler only for pages that have scenarios
 const checkUrlFragment = () => {
-  const currentUrl = window.location.href;
-  //replace the examples below with the urls where scenarios appear:
-  const urlFragments = ["example1.com", "example2.com", "example3.com"];
-  if (urlFragments.some((url) => currentUrl.includes(url))) {
+  const urlFragments = [
+    "hzlboncsNa6jl51uG97Ud7_0ky9TYwhK",
+    "example2.com",
+    "example3.com",
+  ];
+  if (urlFragments.some((url) => window.location.href.includes(url))) {
     addEventListeners();
   }
 };

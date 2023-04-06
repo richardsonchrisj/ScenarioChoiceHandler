@@ -16,5 +16,5 @@ TC_COURSE_NAME = {
 // CourseDesc for the activity
 //
 TC_COURSE_DESC = {
-  "en-US": "&lt;p&gt;This course provides no educational value at all!&lt;/p&gt;"
+  "en-US": "This course provides no educational value at all!"
 };
