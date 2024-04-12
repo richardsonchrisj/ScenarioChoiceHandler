@@ -1,38 +1,16 @@
-//grabs the question and answer from a scenario made in Rise 360
-const getScenario = (name, description) => {
+// Function to handle the scenario and send the xAPI statement
+const sendXapi = (name, description) => {
   const details = TinCan.Utils.parseURL(window.location.href);
-
-  //I'm using the URL to grab parameters. Alternatively, you can hardcode them as seen below
   const newLRS = new TinCan.LRS(details.params);
 
-  // var newLRS;
-  // try {
-  //   newLRS = new TinCan.LRS({
-  //     endpoint: "https://cloud.scorm.com/tc/public/",
-  //     username: "<Test User>",
-  //     password: "<Test Password>",
-  //     allowFail: false,
-  //   });
-  // } catch (ex) {
-  //   console.log("Failed to setup LRS object: ", ex);
-  // }
-
   const statement = new TinCan.Statement({
-    //again, I'm using the URL to get actor info. Alternatively, you can hardcode them as seen below
     actor: JSON.parse(details.params.actor),
-
-    // actor: {
-    //     mbox: "mailto:example@example.com"
-    // },
-
     verb: {
-      id: "http://adlnet.gov/expapi/verbs/responded",
-      display: { "en-US": "responded" },
+      id: "http://adlnet.gov/expapi/verbs/answered",
+      display: { "en-US": "answered" },
     },
-
-    //hardcoding as an interaction
     object: {
-      id: details.path,
+      id: details.params.activity_id,
       definition: {
         name: { "en-US": name },
         description: { "en-US": description },
@@ -40,56 +18,69 @@ const getScenario = (name, description) => {
       },
       objectType: "Activity",
     },
+    result: { response: description },
   });
 
-  //send the xAPI statement to your LRS
-  newLRS.saveStatement(statement, {
-    callback: (err, xhr) => {
-      if (err) {
-        console.log(
-          `Failed to save statement: ${err || xhr.responseText} (${xhr.status})`
-        );
-        return;
-      }
-      console.log("Statement saved");
-    },
+  newLRS.saveStatement(statement, (err, xhr) => {
+    if (err) {
+      console.error(
+        `Failed to save statement: ${err.message || xhr.responseText} (${
+          xhr.status
+        })`
+      );
+      // Handle the error appropriately (e.g., show an error message)
+    } else {
+      // Handle success
+    }
   });
 };
 
-//monitors the page to see if a question was answered
-const questionAnswered = (e) => {
-  if (!e.target.closest(".scenario-block__response__inner")) return;
-
-  const buttons = document.querySelectorAll(".scenario-block__response");
-
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const a = button.querySelector(".fr-view").innerText;
-      const q = document.querySelector(
-        ".scenario-block__dialogue__bubble"
-      ).innerText;
-      getScenario(q, a);
-    });
-  });
-};
-const handleKeyUp = (e) => {
-  if (e.key === "Enter") questionAnswered(e);
-};
-
-//sets up the handler only for pages that have scenarios
-const checkUrlFragment = () => {
-  const urlFragments = [
-    "hzlboncsNa6jl51uG97Ud7_0ky9TYwhK",
-    "example2.com",
-    "example3.com",
-  ];
-  if (urlFragments.some((url) => window.location.href.includes(url))) {
-    addEventListeners();
+// Function to set up event listeners for buttons on scenario
+const setScenarioButtons = () => {
+  const scenarioBlock = document.querySelector(".scenario-block");
+  if (scenarioBlock) {
+    scenarioBlock.removeEventListener("click", scenarioButtonClickHandler);
+    scenarioBlock.addEventListener("click", scenarioButtonClickHandler);
   }
 };
-const addEventListeners = () => {
-  window.addEventListener("mouseup", questionAnswered);
-  window.addEventListener("keyup", handleKeyUp);
+
+// Button click event handler for scenario buttons
+const scenarioButtonClickHandler = (event) => {
+  const button = event.target.closest(
+    '.scenario-block__response[role="button"]'
+  );
+  if (button) {
+    const q =
+      document.querySelector(".scenario-block__dialogue__bubble")?.innerText ||
+      "";
+    const a = button.querySelector("p, .fr-view")?.innerText || "";
+    sendXapi(q, a);
+  }
 };
-//checks if it should add event handlers to any new page
-window.onpopstate = checkUrlFragment;
+
+// Function to set up event listeners for button on fill-in
+const setFillInButtons = () => {
+  const quizCard = document.querySelector(".quiz-card");
+  if (quizCard) {
+    quizCard.removeEventListener("click", fillInButtonClickHandler);
+    quizCard.addEventListener("click", fillInButtonClickHandler);
+  }
+};
+
+// Button click event handler for fill-in buttons
+const fillInButtonClickHandler = (event) => {
+  const button = event.target.closest(".quiz-card__submit");
+  if (button) {
+    const q = document.querySelector(".quiz-card__title")?.innerText || "";
+    const a = document.querySelector(".quiz-fill__input")?.value || "";
+    sendXapi(q, a);
+  }
+};
+
+// Observer to detect changes in the document and set up buttons when needed
+const observer = new MutationObserver(() => {
+  setFillInButtons();
+  setScenarioButtons();
+});
+
+observer.observe(document, { childList: true, subtree: true });
