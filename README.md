@@ -51,10 +51,6 @@ I wanted to save xAPI statements when someone selects options in the scenarios I
 
 To use this yourself, just copy the [scenario.js](https://github.com/richardsonchrisj/ScenarioChoiceHandler/blob/master/faker/lib/scenario.js) file in the [lib](https://github.com/richardsonchrisj/ScenarioChoiceHandler/tree/master/faker/lib) folder and put it in your own exported Rise course folder.
 
-It's important that you update the pages that you'll want to apply it to so the handler is only called on those pages: `const urlFragments = ["example1.com", "example2.com", "example3.com"]`
-
-[![Product Name Screen Shot][product-screenshot7]](https://chrisrichardson.dev)
-
 You'll also need to add this line to your `index.html` file: ` <script type="text/javascript" src="lib/scenario.js"></script>`. 
 
 
