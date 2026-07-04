@@ -1,121 +1,115 @@
-<a name="readme-top"></a>
+# Scenario Choice Handler
 
-[![LinkedIn][linkedin-shield]][linkedin-url]
+Capture learner choices from Articulate Rise 360 scenarios and send structured xAPI-style data to your Learning Record Store.
+
 [![MIT License][license-shield]][license-url]
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://chrisrichardson.dev">
-    <img src="images/logo.png" alt="Logo" width="100" height="100">
-  </a>
+---
 
-  <h3 align="center"> Scenario Choice Handler</h3>
+## I. Overview
 
-  <p align="center">A quick additional js file to capture scenario responses in <a href="https://articulate.com/360/rise">Rise 360</a> courses   <br />
-    <br />
-    ·
-    <a href="https://github.com/richardsonchrisj/ScenarioChoiceHandler/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/richardsonchrisj/ScenarioChoiceHandler/issues">Request Feature</a>
-  </p>
-</div>
+Most learning tools track completion. Completion tells you that someone finished — not what they decided, where they hesitated, or which misconceptions showed up along the way.
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-    </li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#references">References</a></li>
-  </ol>
-</details>
+Scenario-based learning is built on decisions, but Rise 360 doesn't expose scenario choices as data. This project fixes that: a lightweight JavaScript file you drop into an exported Rise course that captures every scenario question and the answer the learner selected, then sends it to your LRS as an xAPI statement.
 
-<!-- ABOUT THE PROJECT -->
+## II. Why This Exists
 
-## About The Project
+Rise 360 scenario blocks are one of the best ways to build decision practice into a course, but the choices learners make inside them are invisible to standard reporting. If you want to know *how* a cohort thinks — not just whether they clicked through — you need the decision-path data.
 
-[![Product Name Screen Shot][product-screenshot2]](https://chrisrichardson.dev)
+I built this because I needed it: I wanted to see which options learners actually chose in the scenarios I shipped, and Articulate doesn't provide that functionality. This is the missing telemetry layer.
 
-I wanted to save xAPI statements when someone selects options in the scenarios I create using [Rise 360](https://articulate.com/360/rise). Articulate doesn't provide that functionality. So I built some additional code that can be added. It grabs the questions and selected answers from the scenario and sends it to your Learning Records Store. 
+## III. How It Works
 
-[![Product Name Screen Shot][product-screenshot3]](https://chrisrichardson.dev)
+```mermaid
+flowchart LR
+    A["Learner makes a choice<br/>in a Rise 360 scenario"] --> B["scenario.js observes<br/>the scenario DOM"]
+    B --> C["Question + selected answer<br/>captured as structured data"]
+    C --> D["xAPI statement built"]
+    D --> E[("Learning Record Store")]
+    E --> F["Decision-path analytics<br/>and cohort reporting"]
+```
 
-To use this yourself, just copy the [scenario.js](https://github.com/richardsonchrisj/ScenarioChoiceHandler/blob/master/faker/lib/scenario.js) file in the [lib](https://github.com/richardsonchrisj/ScenarioChoiceHandler/tree/master/faker/lib) folder and put it in your own exported Rise course folder.
+1. Export your Rise 360 course.
+2. Add `scenario.js` to the exported course's `lib` folder.
+3. The script watches the scenario blocks, grabs each question and the learner's selected answer, and sends an xAPI statement to the LRS configured for the course.
+4. Analyze the statements in your LRS — by learner, by cohort, by question.
 
-You'll also need to add this line to your `index.html` file: ` <script type="text/javascript" src="lib/scenario.js"></script>`. 
+## IV. Sample Statement
 
+A captured choice looks like this in your LRS:
 
-[![Product Name Screen Shot][product-screenshot6]](https://chrisrichardson.dev)
+```json
+{
+  "actor": {
+    "name": "Jordan Learner",
+    "mbox": "mailto:jordan@example.com"
+  },
+  "verb": {
+    "id": "http://adlnet.gov/expapi/verbs/responded",
+    "display": { "en-US": "responded" }
+  },
+  "object": {
+    "id": "https://example.com/courses/faker/scenario/1/question/2",
+    "definition": {
+      "name": { "en-US": "A colleague asks you to share your login credentials. What do you do?" },
+      "type": "http://adlnet.gov/expapi/activities/cmi.interaction",
+      "interactionType": "choice"
+    }
+  },
+  "result": {
+    "response": "Decline and point them to the access request process"
+  },
+  "timestamp": "2026-07-04T18:30:00Z"
+}
+```
 
+## V. Use Cases
 
-I've included a sample course called [Faker](https://github.com/richardsonchrisj/ScenarioChoiceHandler/tree/master/faker) that demonstrates how it all works. If you're using an LRS like [SCORM Cloud](https://scorm.com/), you can download the [Faker](https://github.com/richardsonchrisj/ScenarioChoiceHandler/tree/master/faker) course, zip it, and upload it to your LRS.
+- **Scenario-based learning analytics** — see the choices behind the completion number.
+- **Decision-path analysis** — which routes do learners take through branching scenarios, and where do they stall?
+- **Cohort misconception patterns** — when 40% of a cohort picks the same wrong answer, that's a design signal, not a learner problem.
+- **xAPI / LRS experimentation** — a small, readable starting point for anyone learning how xAPI statements are built and sent.
 
-[![Product Name Screen Shot][product-screenshot]](https://chrisrichardson.dev)
+## VI. Setup
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+1. Export your Rise 360 course (LMS/xAPI export).
+2. Copy [`scenario.js`](faker/lib/scenario.js) from the [`faker/lib`](faker/lib) folder into your exported course's `lib` folder.
+3. Add this line to your course's `index.html`:
 
-## Contributing
+   ```html
+   <script type="text/javascript" src="lib/scenario.js"></script>
+   ```
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+4. Zip the course and upload it to your LRS or LMS as usual.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+A complete sample course, [**Faker**](faker), is included. If you use an LRS such as [SCORM Cloud](https://scorm.com/), download the Faker folder, zip it, and upload it to see the statements flow end to end.
 
-<!-- LICENSE -->
+## VII. Roadmap
 
-## License
+- [ ] Cleaner configuration (LRS endpoint and auth in one config block)
+- [ ] Expanded xAPI payload examples for common scenario shapes
+- [ ] LRS integration notes (SCORM Cloud, Learning Locker, Veracity)
+- [ ] Step-by-step Rise 360 implementation guide with screenshots
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+## VIII. Contributing
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Issues and pull requests welcome — especially real-world Rise 360 edge cases the script doesn't handle yet.
 
-<!-- CONTACT -->
+## IX. License
 
-## Contact
+Distributed under the MIT License. See `LICENSE.txt` for details.
 
-Author Link: [chrisrichardson.dev](https://chrisrichardson.dev)
-</br>
-Project Link: [https://github.com/richardsonchrisj/ScenarioChoiceHandler](https://github.com/richardsonchrisj/ScenarioChoiceHandler)
+## X. Contact
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Chris Richardson — [chrisrichardson.dev](https://chrisrichardson.dev) · [LinkedIn](https://linkedin.com/in/richardsonchrisj)
 
-<!-- REFERENCES -->
+<!-- MARKDOWN LINKS -->
 
-## References
-
-Here are a few great resources if you're learning about xAPI and related tools
-
-- [xAPI Resources](https://xapi.com/dev-resources/)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[contributors-shield]: https://img.shields.io/github/contributors/richardsonchrisj/ScenarioChoiceHandler.svg?style=for-the-badge
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/richardsonchrisj
-[contributors-url]: https://github.com/richardsonchrisj/ScenarioChoiceHandler/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/richardsonchrisj/ScenarioChoiceHandler.svg?style=for-the-badge
-[forks-url]: https://github.com/richardsonchrisj/ScenarioChoiceHandler/network/members
+[license-shield]: https://img.shields.io/github/license/richardsonchrisj/ScenarioChoiceHandler.svg?style=for-the-badge
+[license-url]: https://github.com/richardsonchrisj/ScenarioChoiceHandler/blob/master/LICENSE.txt
 [stars-shield]: https://img.shields.io/github/stars/richardsonchrisj/ScenarioChoiceHandler.svg?style=for-the-badge
 [stars-url]: https://github.com/richardsonchrisj/ScenarioChoiceHandler/stargazers
 [issues-shield]: https://img.shields.io/github/issues/richardsonchrisj/ScenarioChoiceHandler.svg?style=for-the-badge
-[issues-url]: https://github.com/richardsonchrisj/ScenarioChoiceHandler/issues
-[license-shield]: https://img.shields.io/github/license/richardsonchrisj/ScenarioChoiceHandler.svg?style=for-the-badge
-[license-url]: https://github.com/richardsonchrisj/ScenarioChoiceHandler/blob/master/LICENSE.txt
-[product-screenshot]: images/screenshot.png
-[product-screenshot2]: images/screenshot2.png
-[product-screenshot3]: images/screenshot3.png
-[product-screenshot4]: images/screenshot4.png
-[product-screenshot5]: images/screenshot5.png
-[product-screenshot6]: images/screenshot6.png
-[product-screenshot7]: images/screenshot7.png
+[issues-url]: https://github.com/richardsonchrisj/Scena
